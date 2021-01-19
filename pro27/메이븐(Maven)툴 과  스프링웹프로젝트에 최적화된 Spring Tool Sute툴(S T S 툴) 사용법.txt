@@ -1,0 +1,149 @@
+주제 : 메이븐(Maven)툴 과  스프링웹프로젝트에 최적화된 Spring Tool Sute툴(S T S 툴) 사용법
+
+1. 메이븐 툴 설치 하기 
+
+메이븐 툴이란? 자동으로  스프링의 라이브러리 jar파일을 내려 받아 관리하는 저장소 영역의 툴이다.
+
+ 순서1) 메이븐 툴 설치  maven.apache.org 사이트에 접속한 후  Download를 클릭하여 내려 받습니다.
+ 순서2) apache-maven-3.6.3-bin.zip 파일을 다운로드 합니다.
+ 순서3) apache-maven-3.6.3-bin.zip 파일의 압축을 해제 합니다.
+ 순서4) apache-maven-3.6.3-bin폴더 안에 있는 apache-maven-3.6.3폴더를 복사합니다.
+ 순서5) C:\spring폴더에 붙여 넣습니다.
+ 순서6) C:\spring\apache-maven-3.6.3 경로를 복사 한다.
+ 순서7) 환경변수 설정창에서  새로만들기 버튼을 클릭합니다.
+ 순서8) 변수이름 MAVEN_HOME으로 설정하고, 변수 값에는 C:\spring\apache-maven-3.6.3 주소경로를 넣어
+       확인 버튼을 눌러서 저장 시켜 줌
+ 순서9) 시스템변수 path를 선택해  편집버튼을 누른다
+ 순서10) 새로만들기 버튼을 눌러  %MAVEN_HOME%\bin 입력하고  확인 버튼을 눌러 빠져 나옴
+ 순서11) cmd명령 프롬포터 창을 열어 메이븐설치후 설치된 주소를 윈도우에 등록 했는지 확인
+        mvn <--입력 후 확인 
+
+2. Sprint Tool Sute (STS) 툴 설치 하기 
+
+STS는 그이름에서도 알수 있듯이  이클립스를 기반으로 만들어진 스프링 기반 애플리케이션 개발 도구 이다.
+STS를 설치 하는 방법은 2가지 
+1. 이클립스의 마켓플레이스를 통해  STS플러그인을 내려받아 이클립스에 추가 설치 하는 방법
+2. Spring 사이트에 접속해서 STS툴을 다운받아 설치 하는 방법
+   스프링 홈페이지 : http://spring.io/tools 접속후 다운 받을수 있음
+
+
+
+
+3. 메이븐 기반 웹 프로젝트 기본 디렉터리 구조
+
+프로젝트이름
+   |
+   |___ pom.xml
+   |
+   |___ src
+         |
+         |___ main
+	 |	|
+	 |	|____java
+	 |	      |
+	 |	      |_____ com.mycompany.app.*
+	 |
+  	 |___ test
+	       |
+	       |___java
+	       |     |
+	       |     |____com.mycompany.app.*
+	       |
+	       |
+	       |____resource
+
+
+메이븐 기반 웹 프로젝트 구성 요소들 
+
+구성요소						설명
+pom.xml파일				프로젝트 정보가 표시되며 스프링에서 사용되는 여러 가지 라이브러리를 설정해 다운로드할수 있는 Maven툴 관리파일.
+src/main/java				자바소스 파일이 위치하는 경로
+src/main/resource			.properties 파일이나 .xml파일 등 리소스 파일이 위치 하는 경로
+
+
+
+
+
+4. STS환경에서 마이바티스 실습하기
+
+    1> pom.xml을 열어 <dependency>태그를 이용해 외부.jar파일을 메이븐툴에 의해 내려 받습니다.
+
+	https://mvnrepository.com/     <---메이븐툴로 받을 .jar파일 검색 사이트        
+
+	내려받을 .jar파일 종류
+       1) 데이터베이스 기능 관련 jar파일들
+	  common-beanutils-1.8.0.jar
+	  common-dbcp-1.2.2.jar
+          cglib-nodep-2.2.jar
+
+       2) 마이바티스 프레임워크 관련 jar파일들
+	  mybatis-3.1.0.jar
+	  mybatis-spring-1.1.0.jar
+	
+       3)오라클 드라이버 ojdbc6.jar는 오픈소스가 아니기떄문에  직접 다운로드받아  WEB-INF폴더 내부에 lib폴더를 생성해서 복사 해 놓자. 	  
+	 https://mvnrepository.com/artifact/oracle/ojdbc6/11.2.0.3
+
+    2> 마이바티스 관련 XML파일 추가하기 
+	
+       1) 먼저 jdbc.properties 파일은 pro26에서 사용한 파일을 재사용 하기 위해 복사
+	  WEB-INF하위에  config폴더를 만들고 그 하위에 jdbc폴더를 만든 다음  복사여 붙여 넣습니다.
+	
+       2) action-mybatis.xml 파일 또한 pro26에서 사용한 파일을 복사 하여  WEB-INF/spring폴더에 붙여 넣습니다.	
+
+       3) web.xml에서 action-mybatis.파일의 내용을 읽어 들이기 위해
+	
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring/action-mybatis.xml</param-value>  <---경로 수정
+	</context-param>
+
+	4) action-mybatis.xml파일을 열어  jdbc.properties 경로를 수정
+
+        <!-- PropertyPlaceholderConfigurer클래스를 이용해 데이터베이스 설정 관련정보를 jdbc.properties파일에서 읽어들입니다. -->
+	<bean id="propertyPlaceholderConfigurer" 
+	      class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	
+		 <property name="locations">
+		 	<value>/WEB-INF/config/jdbc/jdbc.properties</value>  <---경로 수정
+		 </property>
+	</bean>
+
+
+	5) src/main/resources 패키지 하위에  mybatis패키지를 생성합니다.
+	
+	6) src/main/resources/mybatis 패키지 하위에  mappers패키지와 model패키지를 생성합니다.
+	
+	7) src/main/resources/mybatis/mappers 패키지 하위에  pro26프로젝트에서 사용한 member.xml 복사 해 놓습니다.
+	  
+           src/main/resources/mybatis/model 패키지 하위에  pro26프로젝트에서 사용한 modelConfig.xml 복사 해 놓습니다.
+
+	8) modelConfig.xml을 열어 MemberVO클래스가 존재 하는 파일 경로(패키지 이름)을 수정합니다.
+	
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.myspring.pro27.member.vo.MemberVO"  alias="memberVO" />
+	</typeAliases>
+</configuration>
+
+
+
+    3> 자바 클래스와  JSP 구현하기 
+	1) 자바 클래스 파일과 JSP파일은 pro26프로젝트에 있는 파일들을 재사용 하기 위해 복사합니다.
+	  - 자바파일은 src/main/java 패키지 하위에 있는 com.myspring.pro27패키지에  member패키지를 만든 후 각각의 하위 패키지를 생성해 
+	    붙여 넣습니다.
+	  - jsp파일은  WEB-INF/views폴더 하위에 member폴더를 만든 후 pro26프로젝트의 파일들을 복사해서 붙여 넣습니다.	
+
+
+
+
+ 
+
+
+
+
+
+
