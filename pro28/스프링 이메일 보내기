@@ -1,0 +1,36 @@
+
+
+스프링 이메일 보내기 
+
+- 구글에서 제공하는 SMTP서버를 이용해 메일을 을 보낼것입니다.
+  (구글 이메일 계정을 미리 만들어 놓아야 합니다)
+ 
+순서1. 이메일 기능 설정을 위한 XML파일들을 준비 합니다
+src/main/webapp/WEB-INF/spring/mail-context.xml <--준비
+
+순서2. pom.xml파일을 열어 이메일 기능을 사용하기 위해  코어 스프링 라이브러리버전을 4.1.1.RELEASE로 변경한 후 
+           자바 이메일 라이브러리들을 추가 하기 위해 <dependency>태그 추가 
+
+순서3. web.xml파일에서는 설정 파일이 여러 개인 경우 톰캣 컨테이너가 실행시  spring폴더에 있는 모든 설정파일들을 읽어 들이도록 설정
+
+
+순서4. 구글 SMTP서버와 연동해서 실습하므로 스프링의 JavaMailSenderImpl클래스를 이용해 메일 서버와 관련된 정보를 설정 하도록
+      mail-context.xml을 작성합니다.
+ 
+순서5. 실제 자바 코드로 메일을 전송 해보자. 자바 클래스 파일들 준비 !
+	  com.myspring.pro28.ex03.MailController.java
+	  com.myspring.pro28.ex03.MailService.java
+	
+순서6. MailController클래스 작성
+	  @EnableAsync를 지정해서 메소드를 호출할 경우 비동기로 동작하게 하는 @Async에너테이션 기호를 사용할수 있다.
+
+순서7. MailService클래스 작성
+
+순서8. http://localhost:8080/pro28/sendMail.do로 메일보내기 요청!
+
+
+
+
+
+
+     
