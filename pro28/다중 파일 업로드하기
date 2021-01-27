@@ -1,0 +1,12 @@
+다중 파일 업로드 하기
+
+스프링의 CommonsMultipartResolver클래스를 이용하면 여러 개의 파일을 한꺼번에 업로드 할수 있습니다.
+
+표. CommonsMultipartResolver클래스의 여러가지 속성(변수)
+
+속성								설명
+maxUploadSize				최대로 업로드가 가능한 파일의 크기를 설정합니다.
+maxInMemorySize				디스크에 임시 파일을 생성하기 전 메모리에 보관할수 있는 최대 바이트 크기를 설정합니다.
+defaultEncoding				전달되는 값의 인코딩을 설정 합니다.
+
+
